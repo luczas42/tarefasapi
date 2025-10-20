@@ -47,11 +47,12 @@ public class TarefaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Tarefa> deletarTarefa(@PathVariable Long id) {
+    public ResponseEntity<List<Tarefa>> deletarTarefa(@PathVariable Long id) {
         return repository.findById(id)
                 .map(record -> {
                     repository.deleteById(id);
-                    return ResponseEntity.ok().body(record);
+                    List<Tarefa> tarefasRestantes = repository.findAll();
+                    return ResponseEntity.ok().body(tarefasRestantes);
                 }).orElse(ResponseEntity.notFound().build());
     }
 }
